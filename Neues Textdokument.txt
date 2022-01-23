@@ -1,0 +1,16 @@
+/client
+
+npx create-react-app .
+npm install axios
+
+
+
+
+
+/server
+
+npm init
+npm install mysql2 express
+(npm install nodemon)
+npm install cors
+npm install bcrypt
