@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Axios from "axios";
 import "./App.css";
 
@@ -6,6 +6,17 @@ function App() {
   const [userInput, setUserInput] = useState({});
   const [registerStatus, setRegisterStatus] = useState("");
   const [loginStatus, setLoginStatus] = useState("");
+
+  Axios.defaults.withCredentials = true;
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setUserInput((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+    console.log(userInput);
+  };
 
   const register = () => {
     Axios.post("http://localhost:3002/register", { user: userInput }).then(
@@ -31,14 +42,13 @@ function App() {
     );
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setUserInput((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-    console.log(userInput);
-  };
+  useEffect(() => {
+    Axios.get("http://localhost:3002/login").then((response) => {
+      if (response.data.loggedIn == true) {
+        setLoginStatus(response.data.user[0].username);
+      }
+    });
+  }, []);
 
   return (
     <div className="App">
